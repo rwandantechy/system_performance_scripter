@@ -40,6 +40,7 @@ results/
 ```
 
 Each log file contains:
+- **System Specifications**: Hardware and software details (OS, CPU, memory, Python version)
 - Full measurement results
 - Timestamp of the run
 - Raw data samples for further analysis
@@ -49,6 +50,7 @@ This allows you to:
 - Track performance over time
 - Compare results across different system configurations
 - Maintain a historical record of your system's baseline performance
+- Understand how hardware differences affect measurements
 
 ## Usage
 

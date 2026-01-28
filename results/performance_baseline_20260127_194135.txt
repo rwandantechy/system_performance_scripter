@@ -1,0 +1,46 @@
+SYSTEM PERFORMANCE BASELINE RESULTS
+============================================================
+
+SYSTEM SPECIFICATIONS
+------------------------------
+Operating System: Darwin 25.1.0
+Platform: macOS-26.1-x86_64-i386-64bit
+CPU Cores (Logical): 12
+CPU Cores (Physical): 6
+CPU Frequency (Current): 2600MHz
+CPU Frequency (Max): 2600MHz
+Memory (Total): 16.0GB
+Python Version: 3.12.4
+psutil Version: 5.9.0
+
+TIMESTAMP: 2026-01-27 19:41:35
+
+IDLE BASELINE (10 seconds):
+Average CPU Usage: 6.08%
+Peak CPU Usage: 10.60%
+Average Memory Usage: 54.13%
+Peak Memory Usage: 54.20%
+
+LOAD TEST RESULTS:
+Execution Time: 0.47 seconds
+Primes Found: 17984
+Average CPU Usage: 4.30%
+Peak CPU Usage: 4.30%
+Average Memory Usage: 54.00%
+Peak Memory Usage: 54.00%
+
+PERFORMANCE IMPACT:
+CPU Usage Increase: -1.78%
+Memory Usage Increase: -0.13%
+
+REPRODUCIBILITY NOTES:
+- CPU task: Prime calculation up to 200,000
+- Idle measurement: 10 seconds with 1s intervals
+- Load monitoring: 500ms intervals during execution
+- All measurements use system-wide metrics
+
+RAW DATA:
+Idle CPU Samples: [0.0, 8.8, 6.6, 10.6, 8.7, 7.4, 7.2, 3.0, 3.2, 5.3]
+Idle Memory Samples: [54.2, 54.2, 54.2, 54.2, 54.2, 54.1, 54.1, 54.1, 54.0, 54.0]
+Load CPU Samples: [4.3]
+Load Memory Samples: [54.0]

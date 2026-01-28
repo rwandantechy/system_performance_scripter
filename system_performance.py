@@ -21,8 +21,47 @@ import time
 import threading
 import statistics
 import os
+import platform
+import sys
 from typing import List, Tuple
 from datetime import datetime
+
+
+def get_system_specs() -> dict:
+    """Get system specifications for logging."""
+    try:
+        import psutil
+    except ImportError:
+        return {"error": "psutil not available"}
+
+    specs = {}
+
+    # OS Information
+    specs['os'] = platform.system() + " " + platform.release()
+    specs['platform'] = platform.platform()
+
+    # CPU Information
+    specs['cpu_count'] = psutil.cpu_count(logical=True)
+    specs['cpu_count_physical'] = psutil.cpu_count(logical=False)
+    try:
+        cpu_freq = psutil.cpu_freq()
+        specs['cpu_freq_current'] = f"{cpu_freq.current:.0f}MHz" if cpu_freq else "N/A"
+        specs['cpu_freq_max'] = f"{cpu_freq.max:.0f}MHz" if cpu_freq else "N/A"
+    except:
+        specs['cpu_freq_current'] = "N/A"
+        specs['cpu_freq_max'] = "N/A"
+
+    # Memory Information
+    mem = psutil.virtual_memory()
+    specs['memory_total'] = f"{mem.total / (1024**3):.1f}GB"
+
+    # Python Information
+    specs['python_version'] = sys.version.split()[0]
+
+    # psutil version
+    specs['psutil_version'] = psutil.__version__
+
+    return specs
 
 
 def get_system_metrics() -> Tuple[float, float]:
@@ -204,9 +243,28 @@ def save_results_to_file(idle_metrics: dict, load_metrics: dict):
     filename = f"performance_baseline_{timestamp}.txt"
     filepath = os.path.join(results_dir, filename)
 
+    # Get system specifications
+    system_specs = get_system_specs()
+
     with open(filepath, 'w') as f:
         f.write("SYSTEM PERFORMANCE BASELINE RESULTS\n")
         f.write("="*60 + "\n\n")
+
+        f.write("SYSTEM SPECIFICATIONS\n")
+        f.write("-"*30 + "\n")
+        if "error" in system_specs:
+            f.write(f"Error getting specs: {system_specs['error']}\n")
+        else:
+            f.write(f"Operating System: {system_specs.get('os', 'N/A')}\n")
+            f.write(f"Platform: {system_specs.get('platform', 'N/A')}\n")
+            f.write(f"CPU Cores (Logical): {system_specs.get('cpu_count', 'N/A')}\n")
+            f.write(f"CPU Cores (Physical): {system_specs.get('cpu_count_physical', 'N/A')}\n")
+            f.write(f"CPU Frequency (Current): {system_specs.get('cpu_freq_current', 'N/A')}\n")
+            f.write(f"CPU Frequency (Max): {system_specs.get('cpu_freq_max', 'N/A')}\n")
+            f.write(f"Memory (Total): {system_specs.get('memory_total', 'N/A')}\n")
+            f.write(f"Python Version: {system_specs.get('python_version', 'N/A')}\n")
+            f.write(f"psutil Version: {system_specs.get('psutil_version', 'N/A')}\n")
+        f.write("\n")
 
         f.write("TIMESTAMP: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n\n")
 
