@@ -76,15 +76,18 @@ python system_inspector.py
 
 The system inspector provides:
 - **System Overview**: Hardware specs, OS version, resource usage
+- **Resource Consumption Analysis**: Detailed breakdown of CPU/memory usage by process with contribution percentages
+- **Performance Impact Assessment**: CPU/Memory load levels (LOW/MODERATE/HIGH) with specific recommendations
 - **Top Processes**: Processes ranked by CPU and memory usage
 - **Background Services**: Running system services and daemons
 - **Network Connections**: Active network connections
 
-Use this script before performance testing to identify:
-- Resource-intensive background processes
-- Services that might interfere with measurements
-- Network activity that could affect results
-- Overall system health and load
+Use this script before performance testing to:
+- Identify resource-intensive background processes
+- Quantify each process's contribution to total system load
+- Get performance impact analysis and recommendations
+- Understand why your performance measurements show certain results
+- Justify overall system performance by measuring background resource consumption
 
 Reports are automatically saved to `inspection_reports/` folder.
 
