@@ -1,0 +1,34 @@
+SYSTEM PERFORMANCE BASELINE RESULTS
+============================================================
+
+TIMESTAMP: 2026-01-27 19:36:08
+
+IDLE BASELINE (10 seconds):
+Average CPU Usage: 3.98%
+Peak CPU Usage: 9.50%
+Average Memory Usage: 45.44%
+Peak Memory Usage: 45.60%
+
+LOAD TEST RESULTS:
+Execution Time: 0.47 seconds
+Primes Found: 17984
+Average CPU Usage: 1.80%
+Peak CPU Usage: 1.80%
+Average Memory Usage: 45.10%
+Peak Memory Usage: 45.10%
+
+PERFORMANCE IMPACT:
+CPU Usage Increase: -2.18%
+Memory Usage Increase: -0.34%
+
+REPRODUCIBILITY NOTES:
+- CPU task: Prime calculation up to 200,000
+- Idle measurement: 10 seconds with 1s intervals
+- Load monitoring: 500ms intervals during execution
+- All measurements use system-wide metrics
+
+RAW DATA:
+Idle CPU Samples: [0.0, 3.4, 4.5, 3.6, 8.8, 9.5, 3.8, 2.5, 2.3, 1.4]
+Idle Memory Samples: [45.6, 45.6, 45.6, 45.6, 45.6, 45.6, 45.3, 45.2, 45.2, 45.1]
+Load CPU Samples: [1.8]
+Load Memory Samples: [45.1]
