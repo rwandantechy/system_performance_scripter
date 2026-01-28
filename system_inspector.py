@@ -18,6 +18,7 @@ import psutil
 import platform
 import sys
 import os
+import argparse
 from datetime import datetime
 from typing import Dict, List, Tuple
 
@@ -374,10 +375,11 @@ def print_network_connections(connections: List[Dict]):
     print()
 
 
-def save_inspection_report():
+def save_inspection_report(privacy_mode=False, no_services=False, no_network=False):
     """Save the inspection report to a file."""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"system_inspection_{timestamp}.txt"
+    privacy_suffix = "_privacy" if privacy_mode else ""
+    filename = f"system_inspection_{timestamp}{privacy_suffix}.txt"
     filepath = os.path.join("inspection_reports", filename)
 
     # Create directory if it doesn't exist
@@ -389,6 +391,8 @@ def save_inspection_report():
         sys.stdout = f
 
         print(f"System Inspection Report - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        if privacy_mode:
+            print("🔒 PRIVACY MODE ENABLED - Sensitive information excluded")
         print("=" * 80)
         print()
 
@@ -399,22 +403,49 @@ def save_inspection_report():
         breakdown = get_resource_breakdown()
         analyze_resource_consumption(breakdown)
 
-        services = get_background_services()
-        print_background_services(services)
+        if not privacy_mode and not no_services:
+            services = get_background_services()
+            print_background_services(services)
 
-        connections = get_network_connections()
-        print_network_connections(connections)
+        if not privacy_mode and not no_network:
+            connections = get_network_connections()
+            print_network_connections(connections)
 
         print("Report saved successfully.")
 
     sys.stdout = original_stdout
     print(f"Inspection report saved to: {filepath}")
 
+    if privacy_mode:
+        print("🔒 Privacy mode: Sensitive information was excluded from the report")
+    else:
+        print("⚠️  SECURITY NOTICE:")
+        print("This report contains sensitive system information.")
+        print("Keep it secure and never share with untrusted parties.")
+
 
 def main():
     """Main function to run the system inspection."""
+    parser = argparse.ArgumentParser(description='System Inspector - Analyze system state and resource usage')
+    parser.add_argument('--privacy', action='store_true',
+                       help='Enable privacy mode: exclude sensitive information like network connections and detailed process info')
+    parser.add_argument('--no-network', action='store_true',
+                       help='Exclude network connection information')
+    parser.add_argument('--no-services', action='store_true',
+                       help='Exclude background services information')
+
+    args = parser.parse_args()
+
     print("System Inspector - Detailed System State Analysis")
     print("=" * 60)
+
+    if args.privacy:
+        print("🔒 PRIVACY MODE ENABLED - Sensitive information excluded")
+        print("- Network connections: EXCLUDED")
+        print("- Detailed process information: LIMITED")
+        print("- System identifiers: ANONYMIZED")
+        print()
+
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
 
@@ -432,17 +463,24 @@ def main():
     breakdown = get_resource_breakdown()
     analyze_resource_consumption(breakdown)
 
-    services = get_background_services()
-    print_background_services(services)
+    if not args.privacy and not args.no_services:
+        services = get_background_services()
+        print_background_services(services)
 
-    connections = get_network_connections()
-    print_network_connections(connections)
+    if not args.privacy and not args.no_network:
+        connections = get_network_connections()
+        print_network_connections(connections)
 
     # Save report
-    save_inspection_report()
+    save_inspection_report(args.privacy, args.no_services, args.no_network)
 
     print("System inspection complete. Use this information to understand")
     print("what processes and services might affect your performance measurements.")
+
+    if not args.privacy:
+        print("\n⚠️  SECURITY NOTICE:")
+        print("Result files contain sensitive system information.")
+        print("Never commit them to public repositories or share with untrusted parties.")
 
 
 if __name__ == "__main__":

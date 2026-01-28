@@ -2,6 +2,22 @@
 
 A Python script to establish reliable baseline performance measurements for your system, focusing on CPU usage, memory consumption, and execution time.
 
+## ⚠️ Privacy & Security Notice
+
+**Important**: These scripts collect detailed system information including:
+- Hardware specifications (CPU, memory, disk details)
+- Running processes and their resource usage
+- Network connections and activity
+- System and user identifiers
+
+**Never commit result files to public repositories** - they contain sensitive personal information that could be used for:
+- System fingerprinting
+- Targeted attacks
+- Privacy violations
+- Security assessments against your system
+
+The `results/` and `inspection_reports/` directories are automatically excluded from git tracking.
+
 ## Purpose
 
 This tool helps you:
@@ -72,6 +88,11 @@ python system_performance.py
 ### System Inspection
 ```bash
 python system_inspector.py
+
+# Privacy-conscious options:
+python system_inspector.py --privacy              # Exclude all sensitive data
+python system_inspector.py --no-network          # Exclude network connections
+python system_inspector.py --no-services         # Exclude background services
 ```
 
 The system inspector provides:
@@ -89,7 +110,36 @@ Use this script before performance testing to:
 - Understand why your performance measurements show certain results
 - Justify overall system performance by measuring background resource consumption
 
-Reports are automatically saved to `inspection_reports/` folder.
+## Data Handling & Privacy
+
+### Automatic Protection
+- `results/` and `inspection_reports/` directories are excluded from git tracking
+- Sensitive files are never accidentally committed to repositories
+
+### Privacy Options
+Use command-line flags to control data collection:
+
+```bash
+# Full inspection (includes sensitive data)
+python system_inspector.py
+
+# Privacy mode - excludes network connections and limits process details
+python system_inspector.py --privacy
+
+# Selective exclusion
+python system_inspector.py --no-network --no-services
+```
+
+### What Gets Collected
+- **Basic**: Hardware specs, OS info, resource usage
+- **Sensitive**: Network connections, detailed process lists, user information
+- **Privacy Mode**: Excludes personal identifiers and connection details
+
+### Security Best Practices
+1. Use `--privacy` flag for sensitive environments
+2. Never commit result files to public repositories
+3. Delete old reports when no longer needed
+4. Be aware that saved files contain system fingerprints
 
 The script will:
 1. Measure idle system performance for 10 seconds
