@@ -25,7 +25,7 @@ This tool helps you:
 - Distinguish idle behavior from load-induced behavior
 - Capture peak resource usage rather than averages
 - Ensure reproducible and meaningful measurements
-- Ground future model benchmarking in trustworthy system metrics
+
 
 ## Features
 
