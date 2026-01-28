@@ -52,12 +52,41 @@ This allows you to:
 - Maintain a historical record of your system's baseline performance
 - Understand how hardware differences affect measurements
 
+## Scripts Included
+
+This repository contains two main scripts:
+
+### 1. `system_performance.py` - Performance Baseline Measurement
+Measures CPU usage, memory consumption, and execution time to establish reliable system performance baselines.
+
+### 2. `system_inspector.py` - System State Inspector
+Provides detailed information about the current system state, including running processes, background services, and resource usage. Use this before running performance tests to understand what might affect measurements.
+
 ## Usage
 
-Run the script:
+### Performance Baseline
 ```bash
 python system_performance.py
 ```
+
+### System Inspection
+```bash
+python system_inspector.py
+```
+
+The system inspector provides:
+- **System Overview**: Hardware specs, OS version, resource usage
+- **Top Processes**: Processes ranked by CPU and memory usage
+- **Background Services**: Running system services and daemons
+- **Network Connections**: Active network connections
+
+Use this script before performance testing to identify:
+- Resource-intensive background processes
+- Services that might interfere with measurements
+- Network activity that could affect results
+- Overall system health and load
+
+Reports are automatically saved to `inspection_reports/` folder.
 
 The script will:
 1. Measure idle system performance for 10 seconds

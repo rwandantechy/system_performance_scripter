@@ -1,0 +1,76 @@
+System Inspection Report - 2026-01-27 19:44:39
+================================================================================
+
+SYSTEM OVERVIEW
+==================================================
+Hostname: MacBookPro.hsd1.md.comcast.net
+OS: Darwin 25.1.0
+Platform: macOS-26.1-x86_64-i386-64bit
+Python: 3.12.4
+psutil: 5.9.0
+
+HARDWARE:
+CPU Cores: 6 physical, 12 logical
+CPU Frequency: 2600MHz (max: 2600MHz)
+Memory: 54.9% used (7.2GB available of 16.0GB)
+Disk: 82.7% used (50.2GB free of 289.6GB)
+
+NETWORK:
+Bytes Sent: 431.5MB
+Bytes Received: 905.7MB
+
+TOP PROCESSES (by CPU usage)
+================================================================================
+PID      Name                 User         CPU%   Mem%   Status    
+--------------------------------------------------------------------------------
+78306    python3.12           innocent     92.8   0.1    running   
+6882     Code Helper (Render  innocent     29.4   3.4    running   
+6873     Electron             innocent     8.3    1.1    running   
+616      trustd               innocent     6.0    0.1    running   
+6880     Code Helper (GPU)    innocent     5.9    0.7    running   
+70188    Code Helper (Plugin  innocent     2.6    3.6    running   
+857      UniversalControl     innocent     1.1    0.1    running   
+558      cfprefsd             innocent     1.0    0.0    running   
+70797    dotnet               innocent     0.6    0.6    running   
+615      AXVisualSupportAgen  innocent     0.6    0.2    running   
+70187    Code Helper          innocent     0.5    0.3    running   
+71002    Code Helper (Plugin  innocent     0.4    0.2    running   
+70844    Microsoft.VisualStu  innocent     0.2    0.7    running   
+6963     Code Helper          innocent     0.2    0.4    running   
+561      lsd                  innocent     0.2    0.1    running   
+75852    Google Chrome        innocent     0.1    2.5    running   
+75918    Google Chrome Helpe  innocent     0.1    2.3    running   
+698      Finder               innocent     0.1    0.7    running   
+70847    Microsoft.VisualStu  innocent     0.1    0.4    running   
+936      mongod               innocent     0.1    0.1    running   
+
+BACKGROUND SERVICES
+================================================================================
+PID        Status   Service Name
+--------------------------------------------------------------------------------
+N/A        0        com.apple.SafariHistoryServiceAgent
+1181       0        com.apple.progressd
+N/A        0        com.apple.enhancedloggingd
+926        0        com.apple.cloudphotod
+969        0        com.apple.MENotificationService
+698        0        com.apple.Finder
+638        0        com.apple.homed
+2207       0        com.apple.dataaccess.dataaccessd
+759        0        com.apple.SafeEjectGPUAgent
+N/A        0        com.apple.quicklook
+N/A        0        com.apple.parentalcontrols.check
+853        0        com.apple.mediaremoteagent
+670        0        com.apple.FontWorker
+635        0        com.apple.bird
+941        0        com.apple.amp.mediasharingd
+N/A        0        com.apple.knowledgeconstructiond
+921        0        com.apple.inputanalyticsd
+N/A        0        com.apple.familycontrols.useragent
+N/A        0        com.apple.AssetCache.agent
+620        0        com.apple.GameController.gamecontrolleragentd
+
+NETWORK CONNECTIONS
+================================================================================
+Error: Access denied to network connections
+
+Report saved successfully.
