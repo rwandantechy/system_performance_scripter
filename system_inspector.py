@@ -69,7 +69,61 @@ def get_system_overview() -> Dict:
     return info
 
 
-def get_top_processes(limit: int = 20) -> List[Dict]:
+def get_resource_breakdown() -> Dict:
+    """Get detailed resource consumption breakdown."""
+    try:
+        import psutil
+    except ImportError:
+        return {"error": "psutil not available"}
+
+    breakdown = {}
+
+    # Get all processes with detailed info
+    processes = []
+    total_cpu = 0
+    total_memory = 0
+    total_memory_bytes = 0
+
+    for proc in psutil.process_iter(['pid', 'name', 'username', 'cpu_percent', 'memory_percent', 'memory_info', 'status']):
+        try:
+            info = proc.info
+            if info['cpu_percent'] is not None and info['memory_percent'] is not None:
+                cpu_usage = info['cpu_percent']
+                memory_percent = info['memory_percent']
+                memory_info = info.get('memory_info')
+
+                processes.append({
+                    'pid': info['pid'],
+                    'name': info['name'] or 'Unknown',
+                    'username': info['username'] or 'Unknown',
+                    'cpu_percent': cpu_usage,
+                    'memory_percent': memory_percent,
+                    'memory_rss': memory_info.rss if memory_info else 0,
+                    'status': info['status']
+                })
+
+                total_cpu += cpu_usage
+                total_memory += memory_percent
+                if memory_info:
+                    total_memory_bytes += memory_info.rss
+
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+
+    # Sort by CPU usage
+    processes.sort(key=lambda x: x['cpu_percent'], reverse=True)
+
+    breakdown['processes'] = processes[:20]  # Top 20
+    breakdown['total_cpu_used'] = total_cpu
+    breakdown['total_memory_used_percent'] = total_memory
+    breakdown['total_memory_used_bytes'] = total_memory_bytes
+
+    # System totals
+    system_memory = psutil.virtual_memory()
+    breakdown['system_memory_total'] = system_memory.total
+    breakdown['system_cpu_cores'] = psutil.cpu_count(logical=True)
+
+    return breakdown
     """Get top processes by CPU and memory usage."""
     processes = []
 
@@ -191,17 +245,75 @@ def print_system_overview(info: Dict):
     print()
 
 
-def print_top_processes(processes: List[Dict]):
-    """Print top processes by resource usage."""
-    print("TOP PROCESSES (by CPU usage)")
+def analyze_resource_consumption(breakdown: Dict):
+    """Analyze and print detailed resource consumption analysis."""
+    print("RESOURCE CONSUMPTION ANALYSIS")
     print("=" * 80)
-    print(f"{'PID':<8} {'Name':<20} {'User':<12} {'CPU%':<6} {'Mem%':<6} {'Status':<10}")
+
+    if "error" in breakdown:
+        print(f"Error: {breakdown['error']}")
+        return
+
+    processes = breakdown['processes']
+    total_cpu_used = breakdown['total_cpu_used']
+    total_memory_used_percent = breakdown['total_memory_used_percent']
+    total_memory_used_bytes = breakdown['total_memory_used_bytes']
+    system_memory_total = breakdown['system_memory_total']
+    system_cpu_cores = breakdown['system_cpu_cores']
+
+    print("OVERALL SYSTEM LOAD:")
+    print(f"Total CPU Usage: {total_cpu_used:.1f}% of {system_cpu_cores * 100}% available")
+    print(f"Total Memory Usage: {total_memory_used_percent:.1f}% ({total_memory_used_bytes / (1024**3):.1f}GB of {system_memory_total / (1024**3):.1f}GB)")
+    print()
+
+    print("TOP RESOURCE CONSUMERS:")
+    print("-" * 80)
+    print(f"{'Process':<25} {'CPU%':<6} {'Mem%':<6} {'Mem(MB)':<8} {'Contribution'}")
     print("-" * 80)
 
-    for proc in processes:
-        name = proc['name'][:19] if len(proc['name']) > 19 else proc['name']
-        username = proc['username'][:11] if len(proc['username']) > 11 else proc['username']
-        print(f"{proc['pid']:<8} {name:<20} {username:<12} {proc['cpu_percent']:<6.1f} {proc['memory_percent']:<6.1f} {proc['status']:<10}")
+    for proc in processes[:10]:  # Show top 10
+        mem_mb = proc['memory_rss'] / (1024**2) if proc['memory_rss'] else 0
+        cpu_contrib = (proc['cpu_percent'] / total_cpu_used * 100) if total_cpu_used > 0 else 0
+        mem_contrib = (proc['memory_percent'] / total_memory_used_percent * 100) if total_memory_used_percent > 0 else 0
+
+        name = proc['name'][:24] if len(proc['name']) > 24 else proc['name']
+        print(f"{name:<25} {proc['cpu_percent']:<6.1f} {proc['memory_percent']:<6.1f} {mem_mb:<8.0f} CPU:{cpu_contrib:.1f}%, Mem:{mem_contrib:.1f}%")
+
+    print()
+    print("PERFORMANCE IMPACT ANALYSIS:")
+    print("-" * 80)
+
+    # CPU Analysis
+    if total_cpu_used < 20:
+        cpu_status = "LOW - System has plenty of CPU headroom"
+    elif total_cpu_used < 70:
+        cpu_status = "MODERATE - Some CPU pressure, may affect performance"
+    else:
+        cpu_status = "HIGH - CPU bottleneck likely affecting performance"
+
+    # Memory Analysis
+    if total_memory_used_percent < 50:
+        mem_status = "LOW - Ample memory available"
+    elif total_memory_used_percent < 80:
+        mem_status = "MODERATE - Memory pressure may cause swapping"
+    else:
+        mem_status = "HIGH - Memory bottleneck, likely causing performance issues"
+
+    print(f"CPU Load: {cpu_status}")
+    print(f"Memory Load: {mem_status}")
+    print()
+
+    # Recommendations
+    print("RECOMMENDATIONS:")
+    if total_cpu_used > 50:
+        print("- Consider closing CPU-intensive applications before benchmarking")
+    if total_memory_used_percent > 70:
+        print("- High memory usage may cause swapping - close memory-intensive apps")
+    if len([p for p in processes if p['cpu_percent'] > 10]) > 3:
+        print("- Multiple high-CPU processes detected - may interfere with measurements")
+
+    print(f"- System has {system_cpu_cores} CPU cores total")
+    print(f"- {len(processes)} processes monitored")
     print()
 
 
@@ -284,8 +396,8 @@ def save_inspection_report():
         overview = get_system_overview()
         print_system_overview(overview)
 
-        processes = get_top_processes()
-        print_top_processes(processes)
+        breakdown = get_resource_breakdown()
+        analyze_resource_consumption(breakdown)
 
         services = get_background_services()
         print_background_services(services)
@@ -317,8 +429,8 @@ def main():
     overview = get_system_overview()
     print_system_overview(overview)
 
-    processes = get_top_processes()
-    print_top_processes(processes)
+    breakdown = get_resource_breakdown()
+    analyze_resource_consumption(breakdown)
 
     services = get_background_services()
     print_background_services(services)

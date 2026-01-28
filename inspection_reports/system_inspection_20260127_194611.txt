@@ -1,0 +1,82 @@
+System Inspection Report - 2026-01-27 19:46:11
+================================================================================
+
+SYSTEM OVERVIEW
+==================================================
+Hostname: MacBookPro.hsd1.md.comcast.net
+OS: Darwin 25.1.0
+Platform: macOS-26.1-x86_64-i386-64bit
+Python: 3.12.4
+psutil: 5.9.0
+
+HARDWARE:
+CPU Cores: 6 physical, 12 logical
+CPU Frequency: 2600MHz (max: 2600MHz)
+Memory: 54.8% used (7.2GB available of 16.0GB)
+Disk: 82.7% used (50.2GB free of 289.6GB)
+
+NETWORK:
+Bytes Sent: 442.6MB
+Bytes Received: 906.8MB
+
+RESOURCE CONSUMPTION ANALYSIS
+================================================================================
+OVERALL SYSTEM LOAD:
+Total CPU Usage: 154.4% of 1200% available
+Total Memory Usage: 53.9% (8.6GB of 16.0GB)
+
+TOP RESOURCE CONSUMERS:
+--------------------------------------------------------------------------------
+Process                   CPU%   Mem%   Mem(MB)  Contribution
+--------------------------------------------------------------------------------
+python3.12                93.6   0.1    17       CPU:60.6%, Mem:0.2%
+Code Helper (Renderer)    38.0   3.5    572      CPU:24.6%, Mem:6.5%
+Code Helper (GPU)         7.2    0.7    115      CPU:4.7%, Mem:1.3%
+trustd                    5.8    0.1    11       CPU:3.8%, Mem:0.1%
+Code Helper (Plugin)      3.0    3.8    622      CPU:1.9%, Mem:7.1%
+mongod                    1.3    0.1    23       CPU:0.8%, Mem:0.3%
+cfprefsd                  1.0    0.0    5        CPU:0.6%, Mem:0.1%
+Electron                  0.7    1.1    184      CPU:0.5%, Mem:2.1%
+Code Helper               0.7    0.5    84       CPU:0.5%, Mem:1.0%
+Code Helper               0.7    0.3    45       CPU:0.5%, Mem:0.5%
+
+PERFORMANCE IMPACT ANALYSIS:
+--------------------------------------------------------------------------------
+CPU Load: HIGH - CPU bottleneck likely affecting performance
+Memory Load: MODERATE - Memory pressure may cause swapping
+
+RECOMMENDATIONS:
+- Consider closing CPU-intensive applications before benchmarking
+- System has 12 CPU cores total
+- 20 processes monitored
+
+BACKGROUND SERVICES
+================================================================================
+PID        Status   Service Name
+--------------------------------------------------------------------------------
+N/A        0        com.apple.SafariHistoryServiceAgent
+1181       0        com.apple.progressd
+N/A        0        com.apple.enhancedloggingd
+926        0        com.apple.cloudphotod
+969        0        com.apple.MENotificationService
+698        0        com.apple.Finder
+638        0        com.apple.homed
+2207       0        com.apple.dataaccess.dataaccessd
+759        0        com.apple.SafeEjectGPUAgent
+N/A        0        com.apple.quicklook
+N/A        0        com.apple.parentalcontrols.check
+853        0        com.apple.mediaremoteagent
+670        0        com.apple.FontWorker
+635        0        com.apple.bird
+941        0        com.apple.amp.mediasharingd
+N/A        0        com.apple.knowledgeconstructiond
+921        0        com.apple.inputanalyticsd
+N/A        0        com.apple.familycontrols.useragent
+N/A        0        com.apple.AssetCache.agent
+620        0        com.apple.GameController.gamecontrolleragentd
+
+NETWORK CONNECTIONS
+================================================================================
+Error: Access denied to network connections
+
+Report saved successfully.
