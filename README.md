@@ -1,208 +1,144 @@
 # System Performance Scripter
 
-A Python script to establish reliable baseline performance measurements for your system, focusing on CPU usage, memory consumption, and execution time.
+A Python toolkit for establishing reliable system performance baselines and analyzing system state, focusing on CPU usage, memory consumption, and execution time.
 
 ## ⚠️ Privacy & Security Notice
 
-**Important**: These scripts collect detailed system information including:
-- Hardware specifications (CPU, memory, disk details)
-- Running processes and their resource usage
-- Network connections and activity
-- System and user identifiers
-
-**Never commit result files to public repositories** - they contain sensitive personal information that could be used for:
-- System fingerprinting
-- Targeted attacks
-- Privacy violations
-- Security assessments against your system
-
-The `results/` and `inspection_reports/` directories are automatically excluded from git tracking.
+**Important**: These scripts collect detailed system information. Result files contain sensitive data and are automatically excluded from git tracking. Never commit them to public repositories.
 
 ## Purpose
 
-This tool helps you:
+This toolkit helps you:
 - Measure accurate system-level performance metrics
 - Distinguish idle behavior from load-induced behavior
-- Capture peak resource usage rather than averages
-- Ensure reproducible and meaningful measurements
-
+- Capture peak resource usage patterns
+- Understand background processes affecting measurements
+- Ensure reproducible and meaningful benchmarks
 
 ## Features
 
-- **Cross-platform**: Works on Windows, macOS, and Linux
-- **Reproducible**: Uses standardized workloads (prime number calculation)
-- **Comprehensive**: Measures CPU, memory, and execution time
-- **Peak detection**: Captures maximum resource usage during loads
-- **Idle baseline**: Establishes system behavior under no load
-- **Result logging**: Automatically saves detailed results to timestamped files in `results/` folder
+- **Cross-platform**: Windows, macOS, Linux
+- **Reproducible**: Standardized workloads (prime calculation)
+- **Comprehensive**: CPU, memory, execution time, process analysis
+- **Privacy-conscious**: Multiple privacy modes and data controls
+- **Result logging**: Automatic timestamped reports
 
-## Installation
+## Quick Start
 
-1. Clone or download this repository
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+# Install dependencies
+pip install -r requirements.txt
 
-## Result Logging
+# Measure performance baseline
+python system_performance.py
 
-Results are automatically saved to timestamped files in the `results/` folder:
-
-```
-results/
-├── performance_baseline_20260127_143052.txt
-├── performance_baseline_20260127_143105.txt
-└── ...
+# Inspect system state (before benchmarking)
+python system_inspector.py --privacy
 ```
 
-Each log file contains:
-- **System Specifications**: Hardware and software details (OS, CPU, memory, Python version)
-- Full measurement results
-- Timestamp of the run
-- Raw data samples for further analysis
-- All reproducibility notes
+## Scripts Overview
 
-This allows you to:
-- Track performance over time
-- Compare results across different system configurations
-- Maintain a historical record of your system's baseline performance
-- Understand how hardware differences affect measurements
+### `system_performance.py` - Performance Baseline
+- Measures CPU/memory usage during idle and load conditions
+- Uses prime number calculation as reproducible workload
+- Saves detailed results to `results/` directory
 
-## Scripts Included
+### `system_inspector.py` - System Inspector
+- Analyzes current system state and resource consumption
+- Identifies background processes affecting performance
+- Provides privacy controls for sensitive environments
+- Saves reports to `inspection_reports/` directory
 
-This repository contains two main scripts:
+## Usage Examples
 
-### 1. `system_performance.py` - Performance Baseline Measurement
-Measures CPU usage, memory consumption, and execution time to establish reliable system performance baselines.
-
-### 2. `system_inspector.py` - System State Inspector
-Provides detailed information about the current system state, including running processes, background services, and resource usage. Use this before running performance tests to understand what might affect measurements.
-
-## Usage
-
-### Performance Baseline
+### Performance Measurement
 ```bash
 python system_performance.py
 ```
 
 ### System Inspection
 ```bash
+# Full inspection
 python system_inspector.py
 
-# Privacy-conscious options:
-python system_inspector.py --privacy              # Exclude all sensitive data
-python system_inspector.py --no-network          # Exclude network connections
-python system_inspector.py --no-services         # Exclude background services
-```
-
-The system inspector provides:
-- **System Overview**: Hardware specs, OS version, resource usage
-- **Resource Consumption Analysis**: Detailed breakdown of CPU/memory usage by process with contribution percentages
-- **Performance Impact Assessment**: CPU/Memory load levels (LOW/MODERATE/HIGH) with specific recommendations
-- **Top Processes**: Processes ranked by CPU and memory usage
-- **Background Services**: Running system services and daemons
-- **Network Connections**: Active network connections
-
-Use this script before performance testing to:
-- Identify resource-intensive background processes
-- Quantify each process's contribution to total system load
-- Get performance impact analysis and recommendations
-- Understand why your performance measurements show certain results
-- Justify overall system performance by measuring background resource consumption
-
-## Data Handling & Privacy
-
-### Automatic Protection
-- `results/` and `inspection_reports/` directories are excluded from git tracking
-- Sensitive files are never accidentally committed to repositories
-
-### Privacy Options
-Use command-line flags to control data collection:
-
-```bash
-# Full inspection (includes sensitive data)
-python system_inspector.py
-
-# Privacy mode - excludes network connections and limits process details
+# Privacy mode (excludes sensitive data)
 python system_inspector.py --privacy
 
 # Selective exclusion
 python system_inspector.py --no-network --no-services
 ```
 
+## Result Files
+
+Results are automatically saved to timestamped files:
+
+```
+results/
+├── performance_baseline_20260127_143052.txt
+└── ...
+
+inspection_reports/
+├── system_inspection_20260127_143052.txt
+└── ...
+```
+
+Each file contains:
+- System specifications (hardware, OS, Python version)
+- Measurement results and raw data
+- Timestamp and reproducibility notes
+- Performance analysis and recommendations
+
+## Data Collection & Privacy
+
 ### What Gets Collected
 - **Basic**: Hardware specs, OS info, resource usage
 - **Sensitive**: Network connections, detailed process lists, user information
-- **Privacy Mode**: Excludes personal identifiers and connection details
 
-### Security Best Practices
-1. Use `--privacy` flag for sensitive environments
-2. Never commit result files to public repositories
-3. Delete old reports when no longer needed
-4. Be aware that saved files contain system fingerprints
+### Privacy Controls
+- `--privacy`: Excludes network connections and limits process details
+- `--no-network`: Excludes network connection information
+- `--no-services`: Excludes background service information
 
-The script will:
-1. Measure idle system performance for 10 seconds
-2. Run a CPU-intensive prime calculation task
-3. Monitor system metrics throughout the load
-4. Display comprehensive results
+### Security Notes
+- Result directories are gitignored to prevent accidental commits
+- Use privacy modes in sensitive environments
+- Delete old reports when no longer needed
 
-## Understanding the Results
+## Understanding Results
 
-The script provides several key metrics:
-
-- **Idle Baseline**: System behavior under normal conditions
-- **Load Test Results**: System response during CPU-intensive work
+### Performance Metrics
+- **Idle Baseline**: System behavior under normal conditions (10s measurement)
+- **Load Test**: System response during CPU-intensive work
 - **Performance Impact**: Difference between idle and loaded states
 
-### Interpreting CPU Usage
+### Key Insights
+- **CPU Usage**: Single-threaded workload shows low system-wide % on multi-core systems
+- **Memory Usage**: CPU-bound tasks minimally impact memory
+- **Peak vs Average**: Peaks capture maximum instantaneous usage
+- **Background Impact**: Inspector helps quantify interference from other processes
 
-- **Low CPU during load**: The prime calculation is single-threaded, so on multi-core systems, system-wide CPU % appears low even under load
-- **Peak vs Average**: Peaks show maximum instantaneous usage, averages show sustained load
-- **Idle fluctuations**: Natural system activity (background processes, I/O) causes some variation
-
-### Memory Usage
-
-- **High baseline memory**: ~70% is normal for systems with many applications running
-- **Minimal change during load**: CPU-bound tasks like prime calculation don't significantly increase memory usage
-
-### Execution Time
-
-- **Task duration**: 0.5-1 second provides enough time for meaningful monitoring
-- **Reproducibility**: Same algorithm and input size ensure consistent results across runs
-
-### When to Use These Baselines
-
-Use these measurements to:
-- Compare performance across different hardware configurations
-- Detect performance regressions in your applications
-- Set expectations for resource usage during benchmarking
-- Identify systems with unusual idle behavior
+### When to Use
+- Compare performance across hardware configurations
+- Detect performance regressions
+- Set benchmarking expectations
+- Identify unusual system behavior
 
 ## Methodology
 
-### Idle Baseline Measurement
+### Idle Baseline
 - Duration: 10 seconds
-- Sampling interval: 1 second
-- Captures average system behavior under normal conditions
+- Sampling: 1 second intervals
+- Captures average system behavior
 
 ### Load Test
-- Workload: Prime number calculation up to 50,000
-- Monitoring: Continuous sampling every 500ms during execution
-- Captures peak and average resource usage under load
+- Workload: Prime calculation up to 200,000
+- Monitoring: 500ms intervals during execution
+- Captures peak and sustained resource usage
 
-### Metrics
-- **CPU Usage**: System-wide percentage
-- **Memory Usage**: Virtual memory percentage
-- **Execution Time**: Wall-clock time for the workload
-
-## Reproducibility
-
-To ensure consistent results across runs and systems:
-- Use the same prime calculation limit (50,000)
-- Run measurements at similar system states (close background applications)
-- Avoid running during system maintenance or updates
-- Use the same Python environment and psutil version
+### Metrics Tracked
+- CPU usage (system-wide percentage)
+- Memory usage (virtual memory percentage)
+- Execution time (wall-clock)
 
 ## Dependencies
 
@@ -211,12 +147,12 @@ To ensure consistent results across runs and systems:
 
 ## Contributing
 
-This script is designed to be simple, reliable, and reproducible. For enhancements:
-- Maintain cross-platform compatibility
-- Preserve measurement accuracy
-- Keep workloads computationally intensive but reasonable
-- Document any changes to methodology
+Maintain:
+- Cross-platform compatibility
+- Measurement accuracy
+- Reasonable computational intensity
+- Clear documentation of methodology changes
 
 ## License
 
-MIT License - feel free to use and modify for your benchmarking needs.# system_performance_scripter
+MIT License
